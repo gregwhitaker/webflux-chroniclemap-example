@@ -27,6 +27,26 @@ Follow the steps below to run the example:
 
        {"id":"10","name":"Product10","description":"Product10 Description","active":false,"start_date":"2021-01-01T00:00Z","end_date":"2021-01-31T00:00Z"}
 
+3. There are also several cache management endpoints exposed via the [Cache Management Actuator Endpoint](https://github.com/gregwhitaker/webflux-chroniclemap-example/blob/master/src/main/java/example/actuator/CacheManagementEndpoint.java):
+
+   **Get Cached Value**
+   
+   Gets the value of the key in the cache.
+
+       curl "http://localhost:8077/actuator/cache/values/2"
+
+   **Invalidate Cached Value**
+
+   Removes the value of the key in the cache.
+
+       curl -X "POST" "http://localhost:8077/actuator/cache/values/2/invalidate"
+
+   **Refresh Cached Value**
+
+   Refreshes the value of the key in the cache with the latest value in Redis.
+
+       curl -X "POST" "http://localhost:8077/actuator/cache/values/2/refresh"
+
 ## Bugs and Feedback
 For bugs, questions, and discussions please use the [Github Issues](https://github.com/gregwhitaker/webflux-chroniclemap-example/issues).
 
