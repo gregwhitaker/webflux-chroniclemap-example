@@ -1,0 +1,60 @@
+plugins {
+    id "java"
+    id "org.springframework.boot"           version "2.4.1"
+    id "io.spring.dependency-management"    version "1.0.11.RELEASE"
+    id "com.avast.gradle.docker-compose"    version "0.14.2"
+}
+
+// Project Configuration
+group = "com.github.gregwhitaker"
+version = "0.1.0"
+
+// Dependency Management
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "net.openhft:chronicle-map:3.20.84"
+    implementation "org.springframework.boot:spring-boot-starter-data-redis-reactive"
+    implementation "org.springframework.boot:spring-boot-starter-webflux"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "io.projectreactor:reactor-test"
+}
+
+// Test
+test {
+    useJUnitPlatform()
+}
+
+// Local Development
+dockerCompose {
+    useComposeFiles = ["${rootDir}/docker/docker-compose.yml"]
+}
+
+task bootRunLocal(group: 'Application', type: org.springframework.boot.gradle.tasks.run.BootRun) {
+    dependsOn('composeUp')
+    description('Runs the application and database locally.')
+    mainClass.set("example.Application")
+    classpath = sourceSets.main.runtimeClasspath
+    jvmArgs = ['-Dspring.profiles.active=local']
+}
+
+task bootRunLocalDebug(group: 'Application', type: org.springframework.boot.gradle.tasks.run.BootRun) {
+    dependsOn('composeUp')
+    description('Runs the application (with debugger) and database locally.')
+    mainClass.set("example.Application")
+    classpath = sourceSets.main.runtimeClasspath
+    jvmArgs = ['-Dspring.profiles.active=local', '-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005']
+}
+
+task startRedis(group: 'Database') {
+    dependsOn('composeUp')
+    description('Starts the local Redis database.')
+}
+
+task stopRedis(group: 'Database') {
+    dependsOn('composeDownForced')
+    description('Stops the local Redis database.')
+}
