@@ -1,4 +1,6 @@
 # webflux-chroniclemap-example
+[![Build](https://github.com/gregwhitaker/webflux-chroniclemap-example/actions/workflows/gradle.yml/badge.svg)](https://github.com/gregwhitaker/webflux-chroniclemap-example/actions/workflows/gradle.yml)
+
 An example of retrieving data from an off-heap [Chronicle Map](https://github.com/OpenHFT/Chronicle-Map) in a [Spring WebFlux](https://docs.spring.io/spring-framework/docs/current/reference/html/web-reactive.html) application.
 
 The example application consists of a webservice that serves product data from a Redis
